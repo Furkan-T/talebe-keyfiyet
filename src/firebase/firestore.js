@@ -94,6 +94,7 @@ export const EVALUATION_PARAMS = {
     desk: { label: 'Kullandığı masa ve sandalyesi', icon: '🪑', type: 'positive' },
     bookshelf: { label: 'Kitaplığı düzgün', icon: '📚', type: 'positive' },
     cleanliness: { label: 'Temizlik mahali temiz', icon: '🧹', type: 'positive' },
+    shoeRack: { label: 'Ayakkabılık ve girişte çanta bırakma', icon: '👟', type: 'positive' },
     bullying: { label: 'Zorbalık şikayeti', icon: '👊', type: 'negative' },
     programCompliance: { label: 'Yurt programına riayet', icon: '📅', type: 'positive' },
     classDismissal: { label: 'Dersten kovulma', icon: '🚪', type: 'negative' },
