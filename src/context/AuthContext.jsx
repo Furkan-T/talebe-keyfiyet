@@ -5,7 +5,7 @@ import {
     onAuthStateChanged
 } from 'firebase/auth'
 import { auth } from '../firebase/config'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore'
 import { db } from '../firebase/config'
 
 const AuthContext = createContext(null)
@@ -27,21 +27,29 @@ export function AuthProvider({ children }) {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             if (firebaseUser) {
                 setUser(firebaseUser)
-                // Kullanıcı profilini Firestore'dan al
+                // Kullanıcı profilini Firestore'dan al veya oluştur
                 try {
-                    const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid))
+                    const userDocRef = doc(db, 'users', firebaseUser.uid)
+                    const userDoc = await getDoc(userDocRef)
+
                     if (userDoc.exists()) {
                         setUserProfile({ id: userDoc.id, ...userDoc.data() })
                     } else {
-                        // Profil yoksa temel bilgileri kullan
+                        // Profil yoksa oluştur (ilk giriş)
+                        const newProfile = {
+                            email: firebaseUser.email,
+                            name: firebaseUser.email.split('@')[0],
+                            createdAt: Timestamp.now()
+                        }
+                        await setDoc(userDocRef, newProfile)
                         setUserProfile({
                             id: firebaseUser.uid,
-                            email: firebaseUser.email,
-                            name: firebaseUser.email.split('@')[0]
+                            ...newProfile
                         })
                     }
                 } catch (error) {
-                    console.error('Error fetching user profile:', error)
+                    console.error('Error fetching/creating user profile:', error)
+                    // Hata durumunda temel bilgileri kullan
                     setUserProfile({
                         id: firebaseUser.uid,
                         email: firebaseUser.email,

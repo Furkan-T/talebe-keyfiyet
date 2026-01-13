@@ -55,7 +55,23 @@ function MainLayout() {
                     alignItems: 'center',
                     gap: '8px'
                 }}>
-                    <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>
+                    <button
+                        onClick={() => window.location.reload()}
+                        style={{
+                            background: 'transparent',
+                            border: '1px solid var(--bg-tertiary)',
+                            color: 'var(--text-muted)',
+                            padding: '6px 10px',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            transition: 'all 0.2s ease'
+                        }}
+                        title="Sayfayı Yenile"
+                    >
+                        ↻
+                    </button>
+                    <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)' }}>
                         {userProfile?.name}
                     </span>
                     <button
@@ -64,10 +80,10 @@ function MainLayout() {
                             background: 'transparent',
                             border: '1px solid var(--bg-tertiary)',
                             color: 'var(--text-muted)',
-                            padding: '6px 12px',
+                            padding: '6px 10px',
                             borderRadius: '8px',
                             cursor: 'pointer',
-                            fontSize: '12px',
+                            fontSize: '11px',
                             transition: 'all 0.2s ease'
                         }}
                         title="Çıkış Yap"

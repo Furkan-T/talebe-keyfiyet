@@ -391,16 +391,23 @@ export const getNotifications = async (userId) => {
     }
 }
 
-// Okunmamış bildirim sayısını getir
+// Okunmamış bildirim sayısını getir (composite index olmadan)
 export const getUnreadNotificationCount = async (userId) => {
     try {
+        // Sadece userId ile sorgula (index gerekmez)
         const q = query(
             notificationsRef,
-            where('userId', '==', userId),
-            where('read', '==', false)
+            where('userId', '==', userId)
         )
         const snapshot = await getDocs(q)
-        return snapshot.size
+        // Client-side'da read==false olanları say
+        let count = 0
+        snapshot.docs.forEach(doc => {
+            if (doc.data().read === false) {
+                count++
+            }
+        })
+        return count
     } catch (error) {
         console.error('Error fetching unread count:', error)
         return 0
